@@ -1,0 +1,61 @@
+{
+  "name": "ifly",
+  "version": "1.0.0",
+  "description": "ifly",
+  "main": "./server/index.js",
+  "scripts": {
+    "dev": "NODE_ENV=development nodemon --watch server/ server/index.js",
+    "start": "NODE_ENV=production node server/",
+    "lint": "eslint server --config .eslintrc.json --fix",
+    "test": "NODE_ENV=test npm run lint --silent && jest",
+    "jest": "NODE_ENV=test jest --watch",
+    "coverage": "NODE_ENV=test jest --coverage"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/greven/ifly.git"
+  },
+  "keywords": [
+    "vuejs",
+    "nodejs",
+    "koajs"
+  ],
+  "author": "Nuno Freire",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/greven/ifly/issues"
+  },
+  "homepage": "https://github.com/greven/ifly#readme",
+  "dependencies": {
+    "@koa/cors": "^2.2.1",
+    "dotenv": "^4.0.0",
+    "knex": "^0.14.2",
+    "koa": "^2.4.1",
+    "koa-bodyparser": "^4.2.0",
+    "koa-compress": "^2.0.0",
+    "koa-helmet": "^3.3.0",
+    "koa-logger": "^3.1.0",
+    "koa-response-time": "^2.0.0",
+    "koa-router": "^7.3.0",
+    "sqlite3": "^3.1.13",
+    "uuid": "^3.1.0",
+    "validator": "^9.2.0",
+    "yup": "^0.23.0"
+  },
+  "devDependencies": {
+    "chalk": "^2.3.0",
+    "eslint": "^4.15.0",
+    "eslint-config-standard": "^11.0.0-beta.0",
+    "eslint-plugin-html": "^4.0.1",
+    "eslint-plugin-import": "^2.8.0",
+    "eslint-plugin-node": "^5.2.1",
+    "eslint-plugin-promise": "^3.6.0",
+    "eslint-plugin-standard": "^3.0.1",
+    "jest": "^22.0.6",
+    "nodemon": "^1.14.9",
+    "supertest": "^3.0.0"
+  },
+  "jest": {
+    "testEnvironment": "node"
+  }
+}
