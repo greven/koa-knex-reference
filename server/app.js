@@ -5,7 +5,6 @@ var compress = require('koa-compress')
 var responseTime = require('koa-response-time')
 const bodyParser = require('koa-bodyparser')
 const cors = require('@koa/cors')
-
 const db = require('./middleware/db')
 
 const config = require('./config')

@@ -1,23 +1,31 @@
 const config = require('../../config')
 const db = require('knex')(config.db)
-
-const flights = db('flights')
+const { createQueryFilter } = require('../../lib/filters')
 
 module.exports = {
 
-  getAllFlights: () => {
-    return flights
+  getAllFlights: (ctx) => {
+    return db
       .select('*')
+      .from('flights')
+      .modify(createQueryFilter, ctx.query, [
+        'origin',
+        'destination',
+        'company',
+        'date'
+      ])
   },
 
-  getSingleFlight: (id) => {
-    return flights
-      .select('*')
-      .where({ id: String(id) })
+  getSingleFlight: (ctx) => {
+    return db
+      .first()
+      .from('flights')
+      .where({ id: String(ctx.params.id) })
   },
 
-  createFlight: (flight) => {
-    return flights
+  createFlight: (ctx, flight) => {
+    return db
+      .from('flights')
       .insert(flight)
       .returning('*')
   }

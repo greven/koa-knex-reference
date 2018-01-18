@@ -1,46 +1,32 @@
 const uuid = require('uuid')
 const queries = require('./queries')
+// const { ServerError, NotFoundError } = require('../../lib/errors')
 
 const getAll = async ctx => {
   try {
-    const flights = await queries.getAllFlights()
-    ctx.status = 200
-    ctx.body = {
-      status: 'success',
-      data: flights
-    }
+    const flights = await queries.getAllFlights(ctx)
+    ctx.body = flights
   } catch (error) {
-    ctx.status = 500
-    ctx.body = {
-      status: 'error',
-      message: 'Something went wrong.'
-    }
+    throw error
   }
 }
 
 const getOne = async ctx => {
   try {
-    const movie = await queries.getSingleFlight(ctx.params.id)
-    ctx.status = 200
-    ctx.body = {
-      status: 'success',
-      data: movie
-    }
+    const flight = await queries.getSingleFlight(ctx)
+    ctx.body = flight
   } catch (error) {
-    ctx.status = 500
-    ctx.body = {
-      status: 'error',
-      message: 'Something went wrong.'
-    }
+    throw error
   }
 }
 
 const create = async ctx => {
-  let data = ctx.request.body
-  data.id = uuid()
-
   try {
-    const flight = await queries.createFlight(data)
+    let data = ctx.request.body
+    data.date = new Date(data.date) // TODO: Validate the date
+    data.id = uuid()
+
+    const flight = await queries.createFlight(ctx, data)
 
     if (flight.length) {
       ctx.status = 201
@@ -68,8 +54,8 @@ const update = async ctx => {
 
 }
 
-const remove = async ctx => {
+const del = async ctx => {
 
 }
 
-module.exports = { getAll, getOne, create, update, remove }
+module.exports = { getAll, getOne, create, update, del }

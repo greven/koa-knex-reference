@@ -6,7 +6,7 @@ exports.seed = (knex, promise) => {
         origin: 'Lisbon',
         destination: 'Paris',
         company: 'TAP',
-        date: '2017-01-12',
+        date: new Date('2017-01-12').toJSON(),
         note: 'My first flight!'
       })
     })
@@ -16,7 +16,7 @@ exports.seed = (knex, promise) => {
         origin: 'Paris',
         destination: 'Lisbon',
         company: 'Air France',
-        date: '2017-02-07',
+        date: new Date('2017-02-07').toJSON(),
         note: 'Lovely Paris.'
       })
     })
@@ -26,8 +26,28 @@ exports.seed = (knex, promise) => {
         origin: 'Lisbon',
         destination: 'London',
         company: 'British Airways',
-        date: '2018-02-05',
+        date: new Date('2015-01-24').toJSON(),
         note: 'Tea and biscuits!'
+      })
+    })
+    .then(() => {
+      return knex('flights').insert({
+        id: 'f3b6353a-ee52-4b8b-9622-20109516d22c',
+        origin: 'Manchester',
+        destination: 'Sidney',
+        company: 'British Airways',
+        date: new Date('2018-07-11').toJSON(),
+        note: ''
+      })
+    })
+    .then(() => {
+      return knex('flights').insert({
+        id: 'bbb9353b-80db-4583-ab82-1d46dc3b948c',
+        origin: 'Madrid',
+        destination: 'London',
+        company: 'Iberia',
+        date: new Date('2014-03-02').toJSON(),
+        note: ''
       })
     })
 }
