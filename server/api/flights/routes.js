@@ -1,5 +1,4 @@
 const Router = require('koa-router')
-
 const { getAll, getOne, create, update, del } = require('./controllers')
 
 const router = new Router()

@@ -4,11 +4,11 @@ const { createQueryFilter } = require('../../lib/filters')
 
 module.exports = {
 
-  getAllFlights: (ctx) => {
+  getAllFlights: (query) => {
     return db
       .select('*')
       .from('flights')
-      .modify(createQueryFilter, ctx.query, [
+      .modify(createQueryFilter, query, [
         'origin',
         'destination',
         'company',
@@ -16,14 +16,14 @@ module.exports = {
       ])
   },
 
-  getSingleFlight: (ctx) => {
+  getSingleFlight: (id) => {
     return db
       .first()
       .from('flights')
-      .where({ id: String(ctx.params.id) })
+      .where({ id: String(id) })
   },
 
-  createFlight: (ctx, flight) => {
+  createFlight: (flight) => {
     return db
       .from('flights')
       .insert(flight)

@@ -4,16 +4,26 @@
   "description": "ifly",
   "main": "./server/index.js",
   "scripts": {
+    "preinstall": "",
     "dev": "NODE_ENV=development nodemon --watch server/ server/index.js",
     "start": "NODE_ENV=production node server/",
     "lint": "eslint server --config .eslintrc.json --fix",
     "test": "NODE_ENV=test npm run lint --silent && jest",
-    "jest": "NODE_ENV=test jest --watch",
-    "coverage": "NODE_ENV=test jest --coverage"
+    "test:watch": "NODE_ENV=test jest --watch",
+    "test:coverage": "NODE_ENV=test jest --coverage",
+    "setup": "node setup.js"
+  },
+  "engines": {
+    "node": ">=8.0",
+    "npm": ">=5.0"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/greven/ifly.git"
+  },
+  "bin": {
+    "server": "./bin/server",
+    "cli": "./bin/cli"
   },
   "keywords": [
     "vuejs",
@@ -28,12 +38,16 @@
   "homepage": "https://github.com/greven/ifly#readme",
   "dependencies": {
     "@koa/cors": "^2.2.1",
+    "bcrypt": "^1.0.3",
     "dotenv": "^4.0.0",
+    "inquirer": "^5.0.1",
+    "jsonwebtoken": "^8.1.0",
     "knex": "^0.14.2",
     "koa": "^2.4.1",
     "koa-bodyparser": "^4.2.0",
     "koa-compress": "^2.0.0",
     "koa-helmet": "^3.3.0",
+    "koa-jwt": "^3.3.0",
     "koa-logger": "^3.1.0",
     "koa-response-time": "^2.0.0",
     "koa-router": "^7.3.0",

@@ -6,6 +6,7 @@ var responseTime = require('koa-response-time')
 const bodyParser = require('koa-bodyparser')
 const cors = require('@koa/cors')
 const db = require('./middleware/db')
+const jwt = require('./middleware/jwt')
 
 const config = require('./config')
 const router = require('./routes')
@@ -25,6 +26,9 @@ if (!config.env.isTest) {
 
 // db
 app.use(db(app))
+
+// json web token
+app.use(jwt)
 
 // cors config
 app.use(cors(config.cors))

@@ -1,0 +1,102 @@
+#!/usr/bin/env node
+
+const program = require('commander')
+const { prompt } = require('inquirer')
+const uuid = require('uuid')
+const bcrypt = require('bcrypt')
+const chalk = require('chalk')
+const regex = require('../lib/regex')
+const { omit } = require('../lib/objects')
+
+const {
+  createUser,
+  getAllUsers
+} = require('../server/api/users/queries')
+
+/**
+ * Questions.
+ */
+
+const questions = {
+  createUser: [
+    {
+      type: 'input',
+      name: 'email',
+      message: 'Enter email address ..',
+      validate: email => {
+        return regex.email.test(email)
+      }
+    },
+    {
+      type: 'password',
+      name: 'password',
+      message: 'Enter password ..'
+    },
+    {
+      type: 'password',
+      name: 'passwordConfirm',
+      message: 'Re-enter password ..'
+    }
+  ]
+}
+
+/**
+ * Utility methods.
+ */
+
+function printObject (object, message) {
+  const log = console.log
+  if (message) { log(chalk.green('\n' + message + ':')) }
+  Object.keys(object).forEach(key => {
+    log('  ' + chalk.green('⇢ ', chalk.bold.white(key + ': ')) + chalk.white(object[key]))
+  })
+  log(' ')
+}
+
+/**
+ * Interface.
+ */
+
+program
+  .version(require('../package').version)
+  .description('CLI to interface with the API')
+
+program
+  .command('createUser <username>')
+  .alias('cu')
+  .description('Create a new user')
+  .action((username) => {
+    prompt(questions.createUser).then(async (answers) => {
+      let user = answers
+      user.username = username
+
+      if (answers.password !== answers.passwordConfirm) {
+        console.log(chalk.red('Passwords don\'t match!'))
+      } else {
+        user.id = uuid()
+        user.password = await bcrypt.hash(user.password, 12)
+        try {
+          user = omit(user, ['passwordConfirm'])
+          await createUser(user)
+          printObject(user, 'User created')
+        } catch (error) {
+          console.log(chalk.red(error))
+        }
+      }
+    })
+  })
+
+program
+  .command('listUsers')
+  .alias('lu')
+  .description('List all the users')
+  .action(async () => {
+    const users = await getAllUsers()
+    users.forEach(user => {
+      printObject(omit(user, ['password', 'created_at', 'updated_at']))
+      console.log(chalk.white('- - -\n'))
+    })
+    console.log(chalk.bold.blue('Total: ') + chalk.bold(users.length) + ' users\n')
+  })
+
+program.parse(process.argv)

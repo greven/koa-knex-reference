@@ -6,7 +6,18 @@ exports.up = function (knex, Promise) {
       table.string('destination').notNullable()
       table.string('company').notNullable()
       table.date('date').notNullable()
+      table.uuid('author').notNullable()
+        .references('users.id')
+        .onDelete('CASCADE')
       table.text('note').defaultTo('')
+      table.timestamps(true, true)
+    })
+    .createTable('users', function (table) {
+      table.uuid('id').unique().primary().notNullable()
+      table.string('username').unique().notNullable()
+      table.string('password').notNullable()
+      table.string('email').unique().notNullable()
+      table.text('bio').defaultTo('')
       table.timestamps(true, true)
     })
 }
@@ -14,4 +25,5 @@ exports.up = function (knex, Promise) {
 exports.down = function (knex, Promise) {
   return knex.schema
     .dropTableIfExists('flights')
+    .dropTableIfExists('users')
 }

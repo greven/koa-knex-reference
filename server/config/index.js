@@ -14,7 +14,6 @@ module.exports = {
   server: {
     host: process.env.HOST || 'localhost',
     port: process.env.PORT || 3000,
-    protocol: process.env.PROTOCOL || 'http',
     root: ROOT,
     data: path.join(ROOT, '/data')
   },
@@ -26,6 +25,13 @@ module.exports = {
   },
 
   db: knexfile[NODE_ENV],
+
+  jwtConfig: {
+    secret: process.env.JWT_SECRET || 'secret',
+    options: {
+      expiresIn: '5d'
+    }
+  },
 
   cors: {
     origin: '*',

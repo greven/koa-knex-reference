@@ -1,7 +1,7 @@
 const supertest = require('supertest')
 // const uuid = require('uuid')
-const config = require('../../../config')
-const app = require('../../../app')
+const config = require('../../config')
+const app = require('../..//app')
 const db = require('knex')(config.db)
 
 const server = app.listen(4000)
