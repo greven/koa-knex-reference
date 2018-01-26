@@ -1,4 +1,4 @@
-const { pick } = require('./objects')
+const { pick } = require('../../lib/objects')
 
 const createQueryFilter = (queryBuilder, queryObject, whiteList) => {
   const picked = pick(queryObject, whiteList)

@@ -5,17 +5,27 @@ const { prompt } = require('inquirer')
 const uuid = require('uuid')
 const bcrypt = require('bcrypt')
 const chalk = require('chalk')
+const knex = require('knex')
+const config = require('../server/config')
 const regex = require('../lib/regex')
 const { omit } = require('../lib/objects')
+const {
+  prettyPrintObject,
+  prettyPrintArrayOfObjects
+} = require('../lib/utils')
 
 const {
   createUser,
   getAllUsers
 } = require('../server/api/users/queries')
 
-/**
- * Questions.
- */
+// Migrations
+const createMigrations = function () {
+  const db = knex(config.db)
+  db.migrate.latest()
+}
+
+// -- Questions ------------------------------
 
 const questions = {
   createUser: [
@@ -40,33 +50,20 @@ const questions = {
   ]
 }
 
-/**
- * Utility methods.
- */
-
-function printObject (object, message) {
-  const log = console.log
-  if (message) { log(chalk.green('\n' + message + ':')) }
-  Object.keys(object).forEach(key => {
-    log('  ' + chalk.green('⇢ ', chalk.bold.white(key + ': ')) + chalk.white(object[key]))
-  })
-  log(' ')
-}
-
-/**
- * Interface.
- */
+// -- Command Line Interface ------------------------------
 
 program
   .version(require('../package').version)
+  .usage('<command>')
   .description('CLI to interface with the API')
 
+// Create a User
 program
   .command('createUser <username>')
-  .alias('cu')
   .description('Create a new user')
-  .action((username) => {
+  .action(async (username) => {
     prompt(questions.createUser).then(async (answers) => {
+      await createMigrations()
       let user = answers
       user.username = username
 
@@ -78,7 +75,7 @@ program
         try {
           user = omit(user, ['passwordConfirm'])
           await createUser(user)
-          printObject(user, 'User created')
+          prettyPrintObject(user, 'User created')
         } catch (error) {
           console.log(chalk.red(error))
         }
@@ -86,17 +83,19 @@ program
     })
   })
 
+// List all users
 program
   .command('listUsers')
-  .alias('lu')
   .description('List all the users')
   .action(async () => {
-    const users = await getAllUsers()
-    users.forEach(user => {
-      printObject(omit(user, ['password', 'created_at', 'updated_at']))
-      console.log(chalk.white('- - -\n'))
-    })
-    console.log(chalk.bold.blue('Total: ') + chalk.bold(users.length) + ' users\n')
+    try {
+      await createMigrations()
+      const users = await getAllUsers()
+      prettyPrintArrayOfObjects(users, ['password', 'created_at', 'updated_at'])
+      console.log(chalk.bold.blue('  Total: ') + chalk.bold(users.length) + ' users\n')
+    } catch (error) {
+      console.log(chalk.red(error))
+    }
   })
 
 program.parse(process.argv)

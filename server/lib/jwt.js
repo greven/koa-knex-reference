@@ -1,6 +1,6 @@
 const jwt = require('jsonwebtoken')
 const { jwtConfig } = require('../config')
-const { pick } = require('../lib/objects')
+const { pick } = require('../../lib/objects')
 
 const generateToken = user => {
   return Object.assign({}, user, {

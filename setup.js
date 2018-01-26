@@ -1,5 +1,5 @@
 const fs = require('fs')
 
-// Create the .env file from the example
+// Create .env from the example file
 fs.createReadStream('.env-example')
   .pipe(fs.createWriteStream('.env'))
