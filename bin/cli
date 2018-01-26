@@ -5,8 +5,6 @@ const { prompt } = require('inquirer')
 const uuid = require('uuid')
 const bcrypt = require('bcrypt')
 const chalk = require('chalk')
-const knex = require('knex')
-const config = require('../server/config')
 const regex = require('../lib/regex')
 const { omit } = require('../lib/objects')
 const {
@@ -21,7 +19,8 @@ const {
 
 // Migrations
 const createMigrations = function () {
-  const db = knex(config.db)
+  const config = require('../server/config')
+  const db = require('knex')(config.db)
   db.migrate.latest()
 }
 
@@ -72,9 +71,11 @@ program
       } else {
         user.id = uuid()
         user.password = await bcrypt.hash(user.password, 12)
+
         try {
           user = omit(user, ['passwordConfirm'])
           await createUser(user)
+
           prettyPrintObject(user, 'User created')
         } catch (error) {
           console.log(chalk.red(error))
@@ -91,6 +92,7 @@ program
     try {
       await createMigrations()
       const users = await getAllUsers()
+
       prettyPrintArrayOfObjects(users, ['password', 'created_at', 'updated_at'])
       console.log(chalk.bold.blue('  Total: ') + chalk.bold(users.length) + ' users\n')
     } catch (error) {

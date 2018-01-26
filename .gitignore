@@ -89,5 +89,5 @@ $RECYCLE.BIN/
 .com.apple.timemachine.donotpresent
 
 # --- Project Specific Files ---
-server/data/
+*.sqlite3
 

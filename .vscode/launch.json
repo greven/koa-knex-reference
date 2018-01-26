@@ -11,6 +11,15 @@
     {
       "type": "node",
       "request": "launch",
+      "name": "Run cli",
+      "program": "${workspaceFolder}/bin/cli",
+      "args": [
+        "listUsers"
+      ]
+    },
+    {
+      "type": "node",
+      "request": "launch",
       "name": "Run Tests",
       "program": "${workspaceFolder}/node_modules/jest/bin/jest",
       "env": { "NODE_ENV": "test" }
