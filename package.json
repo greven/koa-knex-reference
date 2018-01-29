@@ -40,8 +40,8 @@
     "@koa/cors": "^2.2.1",
     "bcrypt": "^1.0.3",
     "dotenv": "^4.0.0",
+    "hashids": "^1.1.4",
     "inquirer": "^5.0.1",
-    "jsonwebtoken": "^8.1.0",
     "knex": "^0.14.2",
     "koa": "^2.4.1",
     "koa-bodyparser": "^4.2.0",
@@ -52,7 +52,6 @@
     "koa-response-time": "^2.0.0",
     "koa-router": "^7.3.0",
     "sqlite3": "^3.1.13",
-    "uuid": "^3.1.0",
     "validator": "^9.2.0",
     "yup": "^0.23.0"
   },
