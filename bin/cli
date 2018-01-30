@@ -2,7 +2,6 @@
 
 const program = require('commander')
 const { prompt } = require('inquirer')
-const uuid = require('uuid')
 const bcrypt = require('bcrypt')
 const chalk = require('chalk')
 const regex = require('../lib/regex')
@@ -16,6 +15,11 @@ const {
   createUser,
   getAllUsers
 } = require('../server/api/users/queries')
+
+const {
+  createFlight,
+  getAllFlights
+} = require('../server/api/flights/queries')
 
 // Migrations
 const createMigrations = function () {
@@ -46,6 +50,38 @@ const questions = {
       name: 'passwordConfirm',
       message: 'Re-enter password ..'
     }
+  ],
+  createFlight: [
+    {
+      type: 'input',
+      name: 'origin',
+      message: 'Enter origin ..'
+    },
+    {
+      type: 'input',
+      name: 'destination',
+      message: 'Enter destination ..'
+    },
+    {
+      type: 'input',
+      name: 'company',
+      message: 'Enter company ..'
+    },
+    {
+      type: 'input',
+      name: 'date',
+      message: 'Enter date ..'
+    },
+    {
+      type: 'input',
+      name: 'user',
+      message: 'Enter user ..'
+    },
+    {
+      type: 'input',
+      name: 'note',
+      message: 'Enter note ..'
+    }
   ]
 }
 
@@ -56,9 +92,11 @@ program
   .usage('<command>')
   .description('CLI to interface with the API')
 
+// -- Users ------------------------------
+
 // Create a User
 program
-  .command('createUser <username>')
+  .command('createuser <username>')
   .description('Create a new user')
   .action(async (username) => {
     prompt(questions.createUser).then(async (answers) => {
@@ -69,12 +107,11 @@ program
       if (answers.password !== answers.passwordConfirm) {
         console.log(chalk.red('Passwords don\'t match!'))
       } else {
-        user.id = uuid()
         user.password = await bcrypt.hash(user.password, 12)
 
         try {
           user = omit(user, ['passwordConfirm'])
-          await createUser(user)
+          user.id = await createUser(user)
 
           prettyPrintObject(user, 'User created')
         } catch (error) {
@@ -86,8 +123,8 @@ program
 
 // List all users
 program
-  .command('listUsers')
-  .description('List all the users')
+  .command('listusers')
+  .description('List all users')
   .action(async () => {
     try {
       await createMigrations()
@@ -95,6 +132,44 @@ program
 
       prettyPrintArrayOfObjects(users, ['password', 'created_at', 'updated_at'])
       console.log(chalk.bold.blue('  Total: ') + chalk.bold(users.length) + ' users\n')
+    } catch (error) {
+      console.log(chalk.red(error))
+    }
+  })
+
+// -- Flights ------------------------------
+
+// Create a User
+program
+  .command('createflight')
+  .description('Create a new Flight')
+  .action(async () => {
+    prompt(questions.createFlight).then(async (answers) => {
+      await createMigrations()
+      let flight = answers
+      flight.date = new Date(flight.date).toJSON()
+
+      try {
+        flight.id = await createFlight(flight)
+
+        prettyPrintObject(flight, 'Flight created')
+      } catch (error) {
+        console.log(chalk.red(error))
+      }
+    })
+  })
+
+// List all flights
+program
+  .command('listflights')
+  .description('List all flights')
+  .action(async () => {
+    try {
+      await createMigrations()
+      const flights = await getAllFlights()
+
+      prettyPrintArrayOfObjects(flights, ['created_at', 'updated_at'])
+      console.log(chalk.bold.blue('  Total: ') + chalk.bold(flights.length) + ' flights\n')
     } catch (error) {
       console.log(chalk.red(error))
     }
