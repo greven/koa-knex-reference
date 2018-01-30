@@ -7,6 +7,7 @@ const bodyParser = require('koa-bodyparser')
 const cors = require('@koa/cors')
 const db = require('./middleware/db')
 const jwt = require('./middleware/jwt')
+const user = require('./middleware/user')
 
 const config = require('./config')
 const router = require('./routes')
@@ -30,14 +31,17 @@ app.use(db(app))
 // json web token
 app.use(jwt)
 
+// context user state
+app.use(user)
+
+// body parser
+app.use(bodyParser())
+
 // cors config
 app.use(cors(config.cors))
 
 // compression
 app.use(compress())
-
-// body parser
-app.use(bodyParser())
 
 // routing
 app.use(router)
