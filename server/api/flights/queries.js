@@ -27,6 +27,6 @@ module.exports = {
     return db
       .from('flights')
       .insert(flight)
-      .returning('*')
+      .returning('id')
   }
 }

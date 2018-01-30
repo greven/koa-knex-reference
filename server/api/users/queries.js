@@ -19,7 +19,7 @@ module.exports = {
   createUser: user => {
     return db
       .from('users')
+      .returning('id')
       .insert(user)
-      .returning('*')
   }
 }

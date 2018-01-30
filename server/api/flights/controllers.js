@@ -1,5 +1,5 @@
-const uuid = require('uuid')
 const queries = require('./queries')
+// const { pick } = require('../../../lib/objects')
 // const { ServerError, NotFoundError } = require('../../lib/errors')
 
 module.exports = {
@@ -25,8 +25,9 @@ module.exports = {
   async create (ctx) {
     try {
       let data = ctx.request.body
+      data.user = 1 // FIXME: This is just temporary
+      // data.user = ctx.state.user.id
       data.date = new Date(data.date).toJSON() // TODO: Validate the date
-      data.id = uuid()
 
       const flight = await queries.createFlight(data)
 

@@ -1,11 +1,11 @@
 const Router = require('koa-router')
-const { get, create, update, login } = require('./controllers')
+const { get, update, register, login } = require('./controllers')
 const auth = require('../../middleware/auth')
 
 const router = new Router()
 
 router
-  .post('/users', create)
+  .post('/users', register)
   .post('/users/login', login)
   .get('/users', auth, get)
   .put('/users', auth, update)

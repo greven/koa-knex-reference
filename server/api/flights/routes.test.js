@@ -1,7 +1,6 @@
 const supertest = require('supertest')
-// const uuid = require('uuid')
 const config = require('../../config')
-const app = require('../..//app')
+const app = require('../../app')
 const db = require('knex')(config.db)
 
 const server = app.listen(4000)
@@ -50,7 +49,7 @@ describe('routes: flights', () => {
 
   describe('GET /api/flights/:id', () => {
     it('should return a single flight', async () => {
-      const response = await request.get('/api/flights/bbb9353b-80db-4583-ab82-1d46dc3b948c')
+      const response = await request.get('/api/flights/5')
       expect(response.status).toBe(200)
       expect(response.type).toBe('application/json')
       expect(response.body).toBeDefined()
@@ -62,7 +61,7 @@ describe('routes: flights', () => {
   // describe('POST /api/flights', () => {
   //   it('should create a new flight', async () => {
   //     const response = await request.post('/api/flights').send({
-  //       id: uuid(),
+  //       id: 1,
   //       origin: 'Dijon',
   //       destination: 'Paris',
   //       company: 'Air France',
