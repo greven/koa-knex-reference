@@ -1,5 +1,4 @@
 const queries = require('./queries')
-// const { pick } = require('../../../lib/objects')
 // const { ServerError, NotFoundError } = require('../../lib/errors')
 
 module.exports = {

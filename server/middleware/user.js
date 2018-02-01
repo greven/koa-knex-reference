@@ -1,7 +1,7 @@
-const { isSet } = require('../../lib/objects')
+const _ = require('lodash')
 
 module.exports = async (ctx, next) => {
-  if (isSet(() => ctx.state.jwt.sub.id)) {
+  if (_.has(ctx, 'state.jwt.sub.id')) {
     ctx.state.user = await ctx.app.db
       .from('users')
       .first()

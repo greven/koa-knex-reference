@@ -1,7 +1,7 @@
+const _ = require('lodash')
 const bcrypt = require('bcrypt')
 const queries = require('./queries')
 const jwt = require('../../lib/jwt')
-const { isObject, isSet, omit } = require('../../../lib/objects')
 
 module.exports = {
 
@@ -11,7 +11,7 @@ module.exports = {
    * @param {Object} ctx  - The application context
    */
   async get (ctx) {
-    if (isSet(() => ctx.state.user)) {
+    if (_.has(ctx, 'state.user')) {
       const user = jwt.generateToken(ctx.state.user)
       ctx.body = user
     }
@@ -29,7 +29,7 @@ module.exports = {
       user = jwt.generateToken(user)
 
       ctx.status = 201
-      ctx.body = omit(user, ['password'])
+      ctx.body = _.omit(user, ['password'])
     } catch (error) {
       throw error
     }
@@ -43,7 +43,7 @@ module.exports = {
     try {
       const login = ctx.request.body
 
-      if (!isObject(login) || !login.email || !login.password) {
+      if (_.isPlainObject(login) || !login.email || !login.password) {
         ctx.throw(422)
         // TODO: Throw validation error
       }
@@ -63,7 +63,7 @@ module.exports = {
       }
 
       user = jwt.generateToken(user)
-      ctx.body = omit(user, ['password'])
+      ctx.body = _.omit(user, ['password'])
     } catch (error) {
       throw error
     }

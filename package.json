@@ -4,7 +4,6 @@
   "description": "ifly",
   "main": "./server/index.js",
   "scripts": {
-    "preinstall": "",
     "dev": "NODE_ENV=development nodemon --watch server/ server/index.js",
     "start": "NODE_ENV=production node server/",
     "lint": "eslint server --config .eslintrc.json --fix",
@@ -22,8 +21,8 @@
     "url": "git+https://github.com/greven/ifly.git"
   },
   "bin": {
-    "server": "./bin/server",
-    "cli": "./bin/cli"
+    "server": "./server/bin/server",
+    "cli": "./server/bin/cli"
   },
   "keywords": [
     "vuejs",
@@ -51,6 +50,7 @@
     "koa-logger": "^3.1.0",
     "koa-response-time": "^2.0.0",
     "koa-router": "^7.3.0",
+    "lodash": "^4.17.4",
     "sqlite3": "^3.1.13",
     "validator": "^9.2.0",
     "yup": "^0.23.0"
@@ -66,6 +66,7 @@
     "eslint-plugin-standard": "^3.0.1",
     "jest": "^22.0.6",
     "nodemon": "^1.14.9",
+    "opn": "^5.2.0",
     "supertest": "^3.0.0"
   },
   "jest": {

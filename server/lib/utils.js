@@ -1,5 +1,5 @@
+const _ = require('lodash')
 const chalk = require('chalk')
-const { omit } = require('../lib/objects')
 
 /**
  * Pretty printing for an Object.
@@ -8,7 +8,7 @@ const { omit } = require('../lib/objects')
  * @param {string[]} filters - An optional array with properties to filter from the object.
  * @param {string} message - Optional header message.
  */
-const prettyPrintObject = function (object, filters, message) {
+const printObject = function (object, filters, message) {
   const log = console.log
   message ? log(chalk.green('\n' + message + ':')) : log(' ')
   Object.keys(object).forEach(key => {
@@ -23,13 +23,13 @@ const prettyPrintObject = function (object, filters, message) {
  * @param {Object[]} array - The array of objects.
  * @param {string[]} filters - An optional array with properties to filter from the objects.
  */
-const prettyPrintArrayOfObjects = function (array, filters) {
+const printArrayOfObjects = function (array, filters) {
   array.forEach((element, idx, array) => {
-    prettyPrintObject(omit(element, filters))
+    printObject(_.omit(element, filters))
     if (idx !== array.length - 1) {
       console.log(chalk.white('- - -\n'))
     }
   })
 }
 
-module.exports = { prettyPrintObject, prettyPrintArrayOfObjects }
+module.exports = { printObject, printArrayOfObjects }

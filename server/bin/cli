@@ -1,14 +1,14 @@
 #!/usr/bin/env node
 
+const _ = require('lodash')
 const program = require('commander')
 const { prompt } = require('inquirer')
 const bcrypt = require('bcrypt')
 const chalk = require('chalk')
 const regex = require('../lib/regex')
-const { omit } = require('../lib/objects')
 const {
-  prettyPrintObject,
-  prettyPrintArrayOfObjects
+  printObject,
+  printArrayOfObjects
 } = require('../lib/utils')
 
 const {
@@ -110,10 +110,10 @@ program
         user.password = await bcrypt.hash(user.password, 12)
 
         try {
-          user = omit(user, ['passwordConfirm'])
+          user = _.omit(user, ['passwordConfirm'])
           user.id = await createUser(user)
 
-          prettyPrintObject(user, 'User created')
+          printObject(user, 'User created')
         } catch (error) {
           console.log(chalk.red(error))
         }
@@ -130,7 +130,7 @@ program
       await createMigrations()
       const users = await getAllUsers()
 
-      prettyPrintArrayOfObjects(users, ['password', 'created_at', 'updated_at'])
+      printArrayOfObjects(users, ['password', 'created_at', 'updated_at'])
       console.log(chalk.bold.blue('  Total: ') + chalk.bold(users.length) + ' users\n')
     } catch (error) {
       console.log(chalk.red(error))

@@ -1,7 +1,7 @@
-const { pick } = require('../../lib/objects')
+const _ = require('lodash')
 
 const createQueryFilter = (queryBuilder, queryObject, whiteList) => {
-  const picked = pick(queryObject, whiteList)
+  const picked = _.pick(queryObject, whiteList)
 
   Object.keys(picked).map(key => {
     const items = picked[key].split(',')
