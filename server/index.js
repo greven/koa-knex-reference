@@ -13,3 +13,5 @@ app.listen(port, () => {
   console.log(chalk.green('Server started on ' + uri))
   opn(uri)
 })
+
+app.on('listen', () => { console.log('LISTENiNG!') })

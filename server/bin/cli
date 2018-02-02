@@ -14,16 +14,16 @@ const {
 const {
   createUser,
   getAllUsers
-} = require('../server/api/users/queries')
+} = require('../api/users/queries')
 
 const {
   createFlight,
   getAllFlights
-} = require('../server/api/flights/queries')
+} = require('../api/flights/queries')
 
 // Migrations
 const createMigrations = function () {
-  const config = require('../server/config')
+  const config = require('../config')
   const db = require('knex')(config.db)
   db.migrate.latest()
 }
@@ -88,7 +88,7 @@ const questions = {
 // -- Command Line Interface ------------------------------
 
 program
-  .version(require('../package').version)
+  .version(require('../../package').version)
   .usage('<command>')
   .description('CLI to interface with the API')
 
