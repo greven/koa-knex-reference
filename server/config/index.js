@@ -10,7 +10,6 @@ const isTest = NODE_ENV === 'test'
 const isDev = NODE_ENV === 'development'
 
 module.exports = {
-
   server: {
     host: process.env.HOST || 'localhost',
     port: process.env.PORT || 3000,
@@ -22,6 +21,11 @@ module.exports = {
     isDev,
     isTest,
     isProd
+  },
+
+  paginate: {
+    default: 10,
+    max: 50
   },
 
   db: knexfile[NODE_ENV],
@@ -41,5 +45,4 @@ module.exports = {
     allowHeaders: ['Authorization', 'Content-Type'],
     keepHeadersOnError: true
   }
-
 }

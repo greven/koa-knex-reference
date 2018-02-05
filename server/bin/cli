@@ -21,13 +21,6 @@ const {
   getAllFlights
 } = require('../api/flights/queries')
 
-// Migrations
-const createMigrations = function () {
-  const config = require('../config')
-  const db = require('knex')(config.db)
-  db.migrate.latest()
-}
-
 // -- Questions ------------------------------
 
 const questions = {
@@ -100,7 +93,6 @@ program
   .description('Create a new user')
   .action(async (username) => {
     prompt(questions.createUser).then(async (answers) => {
-      await createMigrations()
       let user = answers
       user.username = username
 
@@ -127,7 +119,6 @@ program
   .description('List all users')
   .action(async () => {
     try {
-      await createMigrations()
       const users = await getAllUsers()
 
       printArrayOfObjects(users, ['password', 'created_at', 'updated_at'])
@@ -145,14 +136,12 @@ program
   .description('Create a new Flight')
   .action(async () => {
     prompt(questions.createFlight).then(async (answers) => {
-      await createMigrations()
       let flight = answers
       flight.date = new Date(flight.date).toJSON()
 
       try {
         flight.id = await createFlight(flight)
-
-        prettyPrintObject(flight, 'Flight created')
+        printObject(flight, 'Flight created')
       } catch (error) {
         console.log(chalk.red(error))
       }
@@ -165,10 +154,8 @@ program
   .description('List all flights')
   .action(async () => {
     try {
-      await createMigrations()
       const flights = await getAllFlights()
-
-      prettyPrintArrayOfObjects(flights, ['created_at', 'updated_at'])
+      printArrayOfObjects(flights, ['created_at', 'updated_at'])
       console.log(chalk.bold.blue('  Total: ') + chalk.bold(flights.length) + ' flights\n')
     } catch (error) {
       console.log(chalk.red(error))

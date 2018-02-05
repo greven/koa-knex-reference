@@ -2,8 +2,7 @@ const queries = require('./queries')
 // const { ServerError, NotFoundError } = require('../../lib/errors')
 
 module.exports = {
-
-  async getAll (ctx) {
+  async getAll(ctx) {
     try {
       const flights = await queries.getAllFlights(ctx.query)
       ctx.body = flights
@@ -12,7 +11,7 @@ module.exports = {
     }
   },
 
-  async getOne (ctx) {
+  async getOne(ctx) {
     try {
       const flight = await queries.getSingleFlight(ctx.params.id)
       ctx.body = flight
@@ -21,7 +20,7 @@ module.exports = {
     }
   },
 
-  async create (ctx) {
+  async create(ctx) {
     try {
       let data = ctx.request.body
       data.user = 1 // FIXME: This is just temporary
@@ -52,11 +51,7 @@ module.exports = {
     }
   },
 
-  async update (ctx) {
+  async update(ctx) {},
 
-  },
-
-  async del (ctx) {
-
-  }
+  async del(ctx) {}
 }

@@ -4,20 +4,19 @@ const queries = require('./queries')
 const jwt = require('../../lib/jwt')
 
 module.exports = {
-
   /**
    * Get current user's data
    *
    * @param {Object} ctx  - The application context
    */
-  async get (ctx) {
+  async get(ctx) {
     if (_.has(ctx, 'state.user')) {
       const user = jwt.generateToken(ctx.state.user)
       ctx.body = user
     }
   },
 
-  async register (ctx) {
+  async register(ctx) {
     // NOTE: Do we really need try catch for one type of error?
     try {
       let user = ctx.request.body
@@ -35,11 +34,11 @@ module.exports = {
     }
   },
 
-  async update (ctx) {
+  async update(ctx) {
     ctx.body = 'Authenticated'
   },
 
-  async login (ctx) {
+  async login(ctx) {
     try {
       const login = ctx.request.body
 

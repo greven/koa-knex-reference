@@ -8,6 +8,7 @@ const cors = require('@koa/cors')
 const db = require('./middleware/db')
 const jwt = require('./middleware/jwt')
 const user = require('./middleware/user')
+const paginate = require('./middleware/paginate')
 
 const config = require('./config')
 const router = require('./routes')
@@ -30,6 +31,9 @@ app.use(db(app))
 
 // json web token
 app.use(jwt)
+
+// paginate requests
+app.use(paginate)
 
 // context user state
 app.use(user)

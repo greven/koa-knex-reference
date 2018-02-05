@@ -1,7 +1,7 @@
 const supertest = require('supertest')
 const bcrypt = require('bcrypt')
-const config = require('../../config')
-const app = require('../../app')
+const config = require('../../../config')
+const app = require('../../../app')
 // const jwt = require('../../lib/jwt')
 const db = require('knex')(config.db)
 
