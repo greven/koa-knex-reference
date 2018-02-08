@@ -1,8 +1,8 @@
 const path = require('path')
-
 const knexfile = require('./knexfile')
 
 const ROOT = path.resolve(__dirname, '../')
+require('dotenv').config({ path: path.join(ROOT, '.env') })
 const NODE_ENV = process.env.NODE_ENV || 'development'
 
 const isProd = NODE_ENV === 'production'
