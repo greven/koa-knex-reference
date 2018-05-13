@@ -1,0 +1,165 @@
+#!/usr/bin/env node
+
+const _ = require('lodash')
+const program = require('commander')
+const { prompt } = require('inquirer')
+const bcrypt = require('bcrypt')
+const chalk = require('chalk')
+const regex = require('../lib/regex')
+const {
+  printObject,
+  printArrayOfObjects
+} = require('../lib/utils')
+
+const {
+  createUser,
+  getAllUsers
+} = require('../api/users/queries')
+
+const {
+  createFlight,
+  getAllFlights
+} = require('../api/flights/queries')
+
+// -- Questions ------------------------------
+
+const questions = {
+  createUser: [
+    {
+      type: 'input',
+      name: 'email',
+      message: 'Enter email address ..',
+      validate: email => {
+        return regex.email.test(email)
+      }
+    },
+    {
+      type: 'password',
+      name: 'password',
+      message: 'Enter password ..'
+    },
+    {
+      type: 'password',
+      name: 'passwordConfirm',
+      message: 'Re-enter password ..'
+    }
+  ],
+  createFlight: [
+    {
+      type: 'input',
+      name: 'origin',
+      message: 'Enter origin ..'
+    },
+    {
+      type: 'input',
+      name: 'destination',
+      message: 'Enter destination ..'
+    },
+    {
+      type: 'input',
+      name: 'company',
+      message: 'Enter company ..'
+    },
+    {
+      type: 'input',
+      name: 'date',
+      message: 'Enter date ..'
+    },
+    {
+      type: 'input',
+      name: 'user',
+      message: 'Enter user ..'
+    },
+    {
+      type: 'input',
+      name: 'note',
+      message: 'Enter note ..'
+    }
+  ]
+}
+
+// -- Command Line Interface ------------------------------
+
+program
+  .version(require('../../package').version)
+  .usage('<command>')
+  .description('CLI to interface with the API')
+
+// -- Users ------------------------------
+
+// Create a User
+program
+  .command('createuser <username>')
+  .description('Create a new user')
+  .action(async (username) => {
+    prompt(questions.createUser).then(async (answers) => {
+      let user = answers
+      user.username = username
+
+      if (answers.password !== answers.passwordConfirm) {
+        console.log(chalk.red('Passwords don\'t match!'))
+      } else {
+        user.password = await bcrypt.hash(user.password, 12)
+
+        try {
+          user = _.omit(user, ['passwordConfirm'])
+          user.id = await createUser(user)
+
+          printObject(user, 'User created')
+        } catch (error) {
+          console.log(chalk.red(error))
+        }
+      }
+    })
+  })
+
+// List all users
+program
+  .command('listusers')
+  .description('List all users')
+  .action(async () => {
+    try {
+      const users = await getAllUsers()
+
+      printArrayOfObjects(users, ['password', 'created_at', 'updated_at'])
+      console.log(chalk.bold.blue('  Total: ') + chalk.bold(users.length) + ' users\n')
+    } catch (error) {
+      console.log(chalk.red(error))
+    }
+  })
+
+// -- Flights ------------------------------
+
+// Create a User
+program
+  .command('createflight')
+  .description('Create a new Flight')
+  .action(async () => {
+    prompt(questions.createFlight).then(async (answers) => {
+      let flight = answers
+      flight.date = new Date(flight.date).toJSON()
+
+      try {
+        flight.id = await createFlight(flight)
+        printObject(flight, 'Flight created')
+      } catch (error) {
+        console.log(chalk.red(error))
+      }
+    })
+  })
+
+// List all flights
+program
+  .command('listflights')
+  .description('List all flights')
+  .action(async () => {
+    try {
+      const flights = await getAllFlights()
+      printArrayOfObjects(flights, ['created_at', 'updated_at'])
+      console.log(chalk.bold.blue('  Total: ') + chalk.bold(flights.length) + ' flights\n')
+    } catch (error) {
+      console.log(chalk.red(error))
+    }
+  })
+
+program.parse(process.argv)

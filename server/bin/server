@@ -1,0 +1,29 @@
+#!/usr/bin/env node
+
+const program = require('commander')
+const chalk = require('chalk')
+const config = require('../config')
+const app = require('../app')
+
+const {
+  port,
+  host
+} = config.server
+
+program
+  .version(require('../package').version)
+  .description('Start the server using the options')
+
+program
+  .command('start')
+  .option('-p, --port <port>', 'server port', parseInt)
+  .option('-h, --host <host>', 'server host')
+  .action((cmd) => {
+    let p = cmd.port || port
+    let h = cmd.host || host
+    app.listen(p, () => {
+      console.log(chalk.green('Server started on http://%s:%d'), h, p)
+    })
+  })
+
+program.parse(process.argv)
