@@ -1,6 +1,6 @@
 {
-  "name": "ifly-client",
-  "short_name": "ifly-client",
+  "name": "client",
+  "short_name": "client",
   "icons": [
     {
       "src": "/img/icons/android-chrome-192x192.png",

@@ -20,7 +20,11 @@
     "type": "git",
     "url": "git+https://github.com/greven/ifly.git"
   },
-  "keywords": ["vuejs", "nodejs", "koajs"],
+  "keywords": [
+    "vuejs",
+    "nodejs",
+    "koajs"
+  ],
   "author": "Nuno Freire",
   "license": "MIT",
   "bugs": {
@@ -51,10 +55,9 @@
   "devDependencies": {
     "chalk": "^2.3.0",
     "eslint": "^4.15.0",
-    "eslint-config-prettier": "^2.9.0",
+    "eslint-config-airbnb": "^16.1.0",
     "eslint-plugin-import": "^2.8.0",
     "eslint-plugin-node": "^5.2.1",
-    "eslint-plugin-prettier": "^2.6.0",
     "eslint-plugin-promise": "^3.6.0",
     "jest": "^22.0.6",
     "nodemon": "^1.14.9",
